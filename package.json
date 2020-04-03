@@ -1,0 +1,50 @@
+{
+  "name": "turnip-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "xo"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/hapi": "^19.1.1",
+    "config": "^3.3.1",
+    "discord.js": "^12.1.1",
+    "moment": "^2.24.0",
+    "sequelize": "^5.21.5",
+    "sqlite3": "^4.1.1"
+  },
+  "devDependencies": {
+    "husky": "^4.2.3",
+    "lint-staged": "^10.1.1",
+    "prettier": "^2.0.2",
+    "xo": "^0.28.2"
+  },
+  "prettier": {
+    "bracketSpacing": true,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "useTabs": false
+  },
+  "xo": {
+    "prettier": true,
+    "rules": {
+      "capitalized-comments": 0
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,css,md}": [
+      "xo --fix",
+      "prettier --write"
+    ]
+  }
+}
