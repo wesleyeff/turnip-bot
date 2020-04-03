@@ -2,10 +2,11 @@ version: '3'
 services:
   app:
     build: .
+    restart: unless-stopped
     ports:
       - '3000:3000'
     environment:
       - DOCKER=true
       - TZ=America/Denver
     volumes:
-      - /PATH/TO/DATABASE:/db
+      - ~/Developer/turnip-bot:/db
