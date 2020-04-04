@@ -1,6 +1,8 @@
 const Hapi = require('@hapi/hapi')
 
-const { turnipRecord } = require('./models')
+const routes = require('./routes')
+
+// const { turnipRecord } = require('./models')
 
 const init = async () => {
   const server = Hapi.server({
@@ -8,15 +10,7 @@ const init = async () => {
     host: '0.0.0.0',
   })
 
-  server.route({
-    method: 'GET',
-    path: '/turnip-prices',
-    handler: async () => {
-      const recs = await turnipRecord.findAll({})
-
-      return recs
-    },
-  })
+  server.route(routes)
 
   await server.start()
   console.log('Server running on %s', server.info.uri)
