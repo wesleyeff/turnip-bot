@@ -3,9 +3,6 @@ const { turnipRecord } = require('../../models')
 module.exports = {
   method: 'GET',
   path: '/users/{userId?}',
-  config: {
-    // cors: true,
-  },
   handler: async (request) => {
     try {
       if (request.params.userId) {
