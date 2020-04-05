@@ -10,3 +10,8 @@ services:
       - TZ=America/Denver
     volumes:
       - ~/Developer/turnip-bot:/db
+networks:
+  default:
+    # Use a custom driver
+    external:
+      name: docker_default
