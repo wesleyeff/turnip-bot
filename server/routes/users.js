@@ -1,4 +1,6 @@
 const { turnipRecord } = require('../../models')
+const moment = require('moment')
+const { Op } = require('sequelize')
 
 module.exports = {
   method: 'GET',
@@ -8,10 +10,18 @@ module.exports = {
       if (request.params.userId) {
         const userId = request.params.userId
 
+        const compDate = moment().subtract(7, 'days').startOf('day').toDate()
+        // const compDate = moment().subtract(2, 'days').toDate()
+
         const userRecs = await turnipRecord.findAll({
           where: {
             userId,
+            server: 'WFH',
+            date: {
+              [Op.gte]: compDate,
+            },
           },
+
           order: [['date', 'ASC']],
           // limit: 2,
         })
