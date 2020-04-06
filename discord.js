@@ -1,8 +1,9 @@
 const config = require('config')
 const Discord = require('discord.js')
-const { sequelize, turnipRecord } = require('./models')
 const moment = require('moment')
+const { Op } = require('sequelize')
 
+const { sequelize, turnipRecord } = require('./models')
 function listen() {
   const client = new Discord.Client()
 
@@ -31,24 +32,56 @@ function listen() {
         const bells = parseBells(message.cleanContent)
 
         if (bells) {
+          const existingrec = await turnipRecord.findOne({
+            where: {
+              server: message.guild.name,
+              date: {
+                [Op.gte]: moment().startOf('day').toDate(),
+              },
+            },
+          })
+
           const day = moment(message.createdTimestamp)
+          const timeOfDay = day.format('A')
 
-          const rec = {
-            price: bells,
-            timeOfDay: day.format('A'),
-            date: day.toISOString(),
-            dayOfWeek: day.format('dddd'),
-            username: message.author.username,
-            userId: message.author.id,
-            messageUrl: message.url,
-            server: message.guild.name,
-            channel: message.channel.name,
+          if (existingrec) {
+            if (timeOfDay === 'AM') {
+              await turnipRecord.update(
+                {
+                  priceam: bells,
+                }
+                // {
+                //   where: {
+                //     id: existingrec.id,
+                //   },
+                // }
+              )
+            } else {
+              await existingrec.update(
+                {
+                  pricepm: bells,
+                }
+                // {
+                //   where: {
+                //     id: existingrec.id,
+                //   },
+                // }
+              )
+            }
+          } else {
+            const rec = {
+              [`price${timeOfDay.toLowerCase()}`]: bells,
+              date: day.toISOString(),
+              dayOfWeek: day.format('dddd'),
+              username: message.author.username,
+              userId: message.author.id,
+              messageUrl: message.url,
+              server: message.guild.name,
+              channel: message.channel.name,
+            }
+
+            await turnipRecord.create(rec)
           }
-
-          console.log('rec', rec)
-
-          const newRecord = await turnipRecord.create(rec)
-          console.log('record created', newRecord)
         }
       } catch (error) {
         console.log('sqlite insert error:', error)

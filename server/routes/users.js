@@ -1,6 +1,7 @@
 const { turnipRecord } = require('../../models')
 const moment = require('moment')
 const { Op } = require('sequelize')
+const config = require('config')
 
 module.exports = {
   method: 'GET',
@@ -16,7 +17,7 @@ module.exports = {
         const userRecs = await turnipRecord.findAll({
           where: {
             userId,
-            server: 'WFH',
+            server: config.server,
             date: {
               [Op.gte]: compDate,
             },

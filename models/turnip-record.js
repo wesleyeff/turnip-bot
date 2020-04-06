@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('turnipRecords', {
-    price: DataTypes.INTEGER,
-    timeOfDay: DataTypes.STRING,
+    priceam: DataTypes.INTEGER,
+    pricepm: DataTypes.INTEGER,
     date: DataTypes.DATE,
     dayOfWeek: DataTypes.STRING,
     username: DataTypes.STRING,
