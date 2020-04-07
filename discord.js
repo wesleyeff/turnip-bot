@@ -35,6 +35,7 @@ function listen() {
           const existingrec = await turnipRecord.findOne({
             where: {
               server: message.guild.name,
+              userId: message.author.id,
               date: {
                 [Op.gte]: moment().startOf('day').toDate(),
               },

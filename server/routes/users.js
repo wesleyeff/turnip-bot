@@ -31,8 +31,11 @@ module.exports = {
       }
 
       const recs = await turnipRecord.findAll({
+        where: {
+          server: config.server,
+        },
         attributes: ['username', 'server', 'userId'],
-        group: ['username'],
+        group: ['userId'],
       })
 
       return recs
