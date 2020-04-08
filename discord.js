@@ -46,7 +46,8 @@ function listen() {
           const timeOfDay = day.format('A')
 
           if (existingrec) {
-            if (timeOfDay === 'AM') {
+            if (timeOfDay === 'AM' && !existingrec.priceam) {
+              // this should probably never happen
               await turnipRecord.update(
                 {
                   priceam: bells,
@@ -57,7 +58,7 @@ function listen() {
                 //   },
                 // }
               )
-            } else {
+            } else if (timeOfDay === 'PM' && !existingrec.pricepm) {
               await existingrec.update(
                 {
                   pricepm: bells,
@@ -94,7 +95,7 @@ function listen() {
 function parseBells(input) {
   const nums = input.match(/\d+/)
 
-  if (nums.length === 1) {
+  if (nums && nums.length === 1) {
     return nums[0]
   }
 }
